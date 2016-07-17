@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "289098605661",
+    "firebase_url": "https://androidchat-b7819.firebaseio.com",
+    "project_id": "androidchat-b7819",
+    "storage_bucket": "androidchat-b7819.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289098605661:android:66d9ee082ad20f6f",
+        "android_client_info": {
+          "package_name": "edu.galileo.android.androidchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289098605661-j9estos0199fpnuedq38hof6r54bcrtb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK_1ztWsRQA9G5BZ1YzG50CkTO3pF_zIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289098605661:android:4e57aee3f8b15ee3",
+        "android_client_info": {
+          "package_name": "edu.galileo.android.proyectofinalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289098605661-j9estos0199fpnuedq38hof6r54bcrtb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK_1ztWsRQA9G5BZ1YzG50CkTO3pF_zIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
