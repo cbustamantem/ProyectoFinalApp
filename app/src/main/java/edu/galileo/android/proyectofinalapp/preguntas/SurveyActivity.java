@@ -30,19 +30,23 @@ import butterknife.OnClick;
 import edu.galileo.android.proyectofinalapp.R;
 import edu.galileo.android.proyectofinalapp.models.Opciones;
 import edu.galileo.android.proyectofinalapp.models.Preguntas;
+import edu.galileo.android.proyectofinalapp.models.PreguntasOpciones;
 import edu.galileo.android.proyectofinalapp.preguntas.viewholder.PostViewHolder;
 
 public class SurveyActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Preguntas, PostViewHolder> mAdapter;
-    private Map<Integer,Preguntas> mapaPreguntas;
-    private Map<Integer,List<Opciones>> mapaOpciones;
+    private Map<Integer,PreguntasOpciones> mapaPreguntas;
+    private Map<String, Preguntas> listaPreguntas = new TreeMap<String,Preguntas >();
+    private Map<Integer, PreguntasOpciones > lista = new TreeMap<Integer,PreguntasOpciones >();
     private Query mref;
     private ValueEventListener mPostListener;
     private String mPostKey;
     private String TAG ="Survey";
     private int preguntaNro;
+    private RadioGroup radioGroup;
+
 
     @Bind(R.id.post_title)
     public TextView titulo;
@@ -55,12 +59,14 @@ public class SurveyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
         ButterKnife.bind(this);
+        radioGroup= new RadioGroup(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         preguntaNro=1;
         //Carga de información de los mapas de preguntas
-        this.mapaPreguntas = this.loadData();
-        addRadioButtons(this.cargarOpciones());
-        mPostKey = this.getCurrentObjectKey();
+        this.mapaPreguntas = this.loadDataPreguntas();
+        Log.d(TAG, "Mapa de Preguntas! :" + this.mapaPreguntas.size());
+        //addRadioButtons(this.cargarOpciones());
+
         Log.d(TAG, "SurveyActivity key:" + mPostKey);
 
     }
@@ -68,41 +74,82 @@ public class SurveyActivity extends AppCompatActivity {
     public void siguientePregunta()
     {
         preguntaNro++;
+        loadDataPreguntas();
 
         Log.d(TAG, "SurveyActivity key:" + mPostKey);
     }
     @OnClick(R.id.btnAnterior)
     public void anteriorPregunta()
     {
-        preguntaNro++;
-        mPostKey = this.getCurrentObjectKey();
+        preguntaNro--;
+        loadDataPreguntas();
         Log.d(TAG, "SurveyActivity key:" + mPostKey);
     }
 
-    private Map<Integer,Preguntas> loadDataPreguntas()
+    public void assignVC()
     {
-        Map<Integer, Preguntas> lista = new TreeMap<Integer,Preguntas>();
-        /*Query myTopPostsQuery = mDatabase.child("user-posts").child(myUserId)
-                .orderByChild("starCount");*/
-        /*mref = FirebaseDatabase.getInstance().getReference()
-                .child("posts").equalTo("nroPregunta",String.valueOf(this.preguntaNro));*/
-         mref  = mDatabase.child("user-posts").child(this.getUid())
-                 .orderByChild("nroPregunta");
 
-      /*  mref = FirebaseDatabase.getInstance().getReference()
-                .child("posts").orderByChild("nroPregunta");*/
+    }
 
-        if (null != mref) {
-            mapaPreguntas = new TreeMap<>();
-            mref.addValueEventListener(new ValueEventListener() {
+    private Map<Integer,PreguntasOpciones > loadDataPreguntas()
+    {
+
+
+        //Obtener Preguntas
+        // Query q1  = mDatabase.child("user-posts").child(this.getUid())
+          //       .equalTo("nroPregunta",String.valueOf(this.preguntaNro));
+        Query q1  = mDatabase.child("user-posts").child(this.getUid())
+                .orderByChild("nroPregunta");
+
+
+
+        if (null != q1) {
+
+            q1.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Log.e("Count " ,""+snapshot.getChildrenCount());
                     for (DataSnapshot postSnapshot: snapshot.getChildren()) {
 
                         Preguntas post = postSnapshot.getValue(Preguntas.class);
-                        lista.put(post.nroPregunta,post);
                         Log.e("Get Data", post.title);
+                        Log.e("Get Key", postSnapshot.getKey());
+                        if (post.nroPregunta == preguntaNro)
+                        {
+                            getListaPreguntas().put(postSnapshot.getKey(),post);
+                            titulo.setText(post.title);
+
+                            Query q2  = mDatabase.child("post-comments").child(postSnapshot.getKey());
+                            if (null != q2) {
+
+                                q2.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        Log.e("Count " ,""+snapshot.getChildrenCount());
+                                        List<Opciones> listaOpciones = new ArrayList<Opciones>();
+                                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+
+                                            Opciones post = postSnapshot.getValue(Opciones.class);
+                                            Log.d(TAG,"Opciones Data "+  post.text);
+                                            listaOpciones.add(post);
+                                            //listaPreguntas.put(postSnapshot.getKey(),post);
+                                        }
+                                        addRadioButtons(listaOpciones);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+
+                                });
+                                // mAdapter
+                                //Log.d(TAG, "SurveyActivity registros:" + mAdapter.getItemCount());
+
+                               // Log.d(TAG, "SurveyActivity key:" + mref.getRef());
+                                //return lista ;
+                            }
+                        }
                     }
                 }
 
@@ -115,24 +162,49 @@ public class SurveyActivity extends AppCompatActivity {
            // mAdapter
             //Log.d(TAG, "SurveyActivity registros:" + mAdapter.getItemCount());
 
-            Log.d(TAG, "SurveyActivity key:" + mref.getRef());
-            return lista ;
+//            Log.d(TAG, "SurveyActivity key:" + mref.getRef());
+            //return lista ;
         }
+        else {
+            Log.d(TAG, "No query result for pregunta:" + this.preguntaNro);
+        }
+
+
+/*
+        for (Map.Entry<String, Preguntas> entry : getListaPreguntas().entrySet()) {
+
+            Log.d(TAG,"Iterate Data "+ entry.getValue().title);
+
+                //Busca los comentarios = opciones por el id de la pregunta
+
+            else
+            {
+                Log.d(TAG, "SurveyActivity No se encontraron opciones");
+            }
+        }*/
+
+
+
+
         return lista;
 
     }
     public void addRadioButtons(List<Opciones> listaOpciones) {
 
-         RadioGroup radioGroup= new RadioGroup(this);
+        ((ViewGroup) findViewById(R.id.radiogroup)).removeAllViews();
+        radioGroup.removeAllViews();
         radioGroup.setOrientation(LinearLayout.VERTICAL);
 
 
+
+        int contador=0;
         for (Opciones opcion: listaOpciones) {
             //RadioButton rdbtn= new RadioButton(this,  null, R.attr.radioButtonStyle);
             RadioButton rdbtn= new RadioButton(this);
-            rdbtn.setId(opcion.nroOpcion);
+            rdbtn.setId(contador++);
             rdbtn.setText(opcion.text);
             radioGroup.addView(rdbtn);
+
         }
         ((ViewGroup) findViewById(R.id.radiogroup)).addView(radioGroup);
 
@@ -153,5 +225,13 @@ public class SurveyActivity extends AppCompatActivity {
     }
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public Map<String, Preguntas> getListaPreguntas() {
+        return listaPreguntas;
+    }
+
+    public Map<Integer, PreguntasOpciones> getLista() {
+        return lista;
     }
 }
