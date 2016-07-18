@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -21,8 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,22 +29,23 @@ import butterknife.OnClick;
 import edu.galileo.android.proyectofinalapp.R;
 import edu.galileo.android.proyectofinalapp.models.Opciones;
 import edu.galileo.android.proyectofinalapp.models.Preguntas;
-import edu.galileo.android.proyectofinalapp.models.PreguntasOpciones;
 import edu.galileo.android.proyectofinalapp.preguntas.viewholder.PostViewHolder;
 
 public class SurveyActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Preguntas, PostViewHolder> mAdapter;
-    private Map<Integer,PreguntasOpciones> mapaPreguntas;
-    private Map<String, Preguntas> listaPreguntas = new TreeMap<String,Preguntas >();
-    private Map<Integer, PreguntasOpciones > lista = new TreeMap<Integer,PreguntasOpciones >();
     private Query mref;
     private ValueEventListener mPostListener;
     private String mPostKey;
     private String TAG ="Survey";
     private int preguntaNro;
-    private RadioGroup radioGroup;
+
+    @Bind(R.id.surveyReciclerView)
+    public RelativeLayout rView;
+
+    @Bind(R.id.surveyRadioGroup)
+    public RadioGroup radioGroup;
 
 
     @Bind(R.id.post_title)
@@ -62,10 +62,7 @@ public class SurveyActivity extends AppCompatActivity {
         radioGroup= new RadioGroup(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         preguntaNro=1;
-        //Carga de información de los mapas de preguntas
-        this.mapaPreguntas = this.loadDataPreguntas();
-        Log.d(TAG, "Mapa de Preguntas! :" + this.mapaPreguntas.size());
-        //addRadioButtons(this.cargarOpciones());
+        this.loadDataPreguntas(rView,radioGroup);
 
         Log.d(TAG, "SurveyActivity key:" + mPostKey);
 
@@ -74,16 +71,20 @@ public class SurveyActivity extends AppCompatActivity {
     public void siguientePregunta()
     {
         preguntaNro++;
-        loadDataPreguntas();
+        this.loadDataPreguntas(rView,radioGroup);
 
         Log.d(TAG, "SurveyActivity key:" + mPostKey);
     }
     @OnClick(R.id.btnAnterior)
     public void anteriorPregunta()
     {
-        preguntaNro--;
-        loadDataPreguntas();
-        Log.d(TAG, "SurveyActivity key:" + mPostKey);
+        if (preguntaNro >1 )
+        {
+            preguntaNro--;
+            this.loadDataPreguntas(rView,radioGroup);
+            Log.d(TAG, "SurveyActivity key:" + mPostKey);
+        }
+
     }
 
     public void assignVC()
@@ -91,17 +92,12 @@ public class SurveyActivity extends AppCompatActivity {
 
     }
 
-    private Map<Integer,PreguntasOpciones > loadDataPreguntas()
+    private void loadDataPreguntas(final RelativeLayout pReciclerView, final RadioGroup pRadioGroup)
     {
 
 
-        //Obtener Preguntas
-        // Query q1  = mDatabase.child("user-posts").child(this.getUid())
-          //       .equalTo("nroPregunta",String.valueOf(this.preguntaNro));
         Query q1  = mDatabase.child("user-posts").child(this.getUid())
                 .orderByChild("nroPregunta");
-
-
 
         if (null != q1) {
 
@@ -116,7 +112,6 @@ public class SurveyActivity extends AppCompatActivity {
                         Log.e("Get Key", postSnapshot.getKey());
                         if (post.nroPregunta == preguntaNro)
                         {
-                            getListaPreguntas().put(postSnapshot.getKey(),post);
                             titulo.setText(post.title);
 
                             Query q2  = mDatabase.child("post-comments").child(postSnapshot.getKey());
@@ -132,9 +127,8 @@ public class SurveyActivity extends AppCompatActivity {
                                             Opciones post = postSnapshot.getValue(Opciones.class);
                                             Log.d(TAG,"Opciones Data "+  post.text);
                                             listaOpciones.add(post);
-                                            //listaPreguntas.put(postSnapshot.getKey(),post);
                                         }
-                                        addRadioButtons(listaOpciones);
+                                        addRadioButtons(listaOpciones,pReciclerView, pRadioGroup);
                                     }
 
                                     @Override
@@ -143,11 +137,6 @@ public class SurveyActivity extends AppCompatActivity {
                                     }
 
                                 });
-                                // mAdapter
-                                //Log.d(TAG, "SurveyActivity registros:" + mAdapter.getItemCount());
-
-                               // Log.d(TAG, "SurveyActivity key:" + mref.getRef());
-                                //return lista ;
                             }
                         }
                     }
@@ -159,54 +148,32 @@ public class SurveyActivity extends AppCompatActivity {
                 }
 
             });
-           // mAdapter
-            //Log.d(TAG, "SurveyActivity registros:" + mAdapter.getItemCount());
 
-//            Log.d(TAG, "SurveyActivity key:" + mref.getRef());
-            //return lista ;
         }
         else {
             Log.d(TAG, "No query result for pregunta:" + this.preguntaNro);
         }
 
 
-/*
-        for (Map.Entry<String, Preguntas> entry : getListaPreguntas().entrySet()) {
-
-            Log.d(TAG,"Iterate Data "+ entry.getValue().title);
-
-                //Busca los comentarios = opciones por el id de la pregunta
-
-            else
-            {
-                Log.d(TAG, "SurveyActivity No se encontraron opciones");
-            }
-        }*/
-
-
-
-
-        return lista;
 
     }
-    public void addRadioButtons(List<Opciones> listaOpciones) {
+    public void addRadioButtons(List<Opciones> listaOpciones, RelativeLayout rView, RadioGroup rg) {
 
-        ((ViewGroup) findViewById(R.id.radiogroup)).removeAllViews();
-        radioGroup.removeAllViews();
-        radioGroup.setOrientation(LinearLayout.VERTICAL);
+        //rView.get
 
-
-
+        ((ViewGroup) findViewById(R.id.surveyRadioGroup)).removeAllViews();
+        rg.removeAllViews();
+        rg.setOrientation(LinearLayout.VERTICAL);
         int contador=0;
         for (Opciones opcion: listaOpciones) {
             //RadioButton rdbtn= new RadioButton(this,  null, R.attr.radioButtonStyle);
             RadioButton rdbtn= new RadioButton(this);
             rdbtn.setId(contador++);
             rdbtn.setText(opcion.text);
-            radioGroup.addView(rdbtn);
+            rg.addView(rdbtn);
 
         }
-        ((ViewGroup) findViewById(R.id.radiogroup)).addView(radioGroup);
+        rView.addView(rg);
 
     }
     private List<Opciones> cargarOpciones(){
@@ -227,11 +194,4 @@ public class SurveyActivity extends AppCompatActivity {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public Map<String, Preguntas> getListaPreguntas() {
-        return listaPreguntas;
-    }
-
-    public Map<Integer, PreguntasOpciones> getLista() {
-        return lista;
-    }
 }

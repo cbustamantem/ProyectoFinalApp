@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/surveyReciclerView"
     tools:context="edu.galileo.android.proyectofinalapp.preguntas.SurveyActivity">
 
     <RadioGroup
-        android:id="@+id/radiogroup"
+        android:id="@+id/surveyRadioGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

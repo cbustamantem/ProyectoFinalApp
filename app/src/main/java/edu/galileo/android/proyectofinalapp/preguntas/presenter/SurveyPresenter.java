@@ -6,4 +6,5 @@ package edu.galileo.android.proyectofinalapp.preguntas.presenter;
 
 public interface SurveyPresenter {
 
+
 }
