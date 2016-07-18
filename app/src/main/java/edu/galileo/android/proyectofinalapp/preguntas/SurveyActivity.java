@@ -173,7 +173,8 @@ public class SurveyActivity extends AppCompatActivity {
             rg.addView(rdbtn);
 
         }
-        rView.addView(rg);
+        ((ViewGroup) findViewById(R.id.surveyRadioGroup)).addView(radioGroup);
+//        rView.addView(rg);
 
     }
     private List<Opciones> cargarOpciones(){
