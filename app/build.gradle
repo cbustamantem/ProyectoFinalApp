@@ -47,7 +47,6 @@ dependencies {
     compile "com.google.firebase:firebase-core:$rootProject.ext.playServicesVersion"
     compile "com.google.firebase:firebase-auth:$rootProject.ext.playServicesVersion"
     compile "com.google.firebase:firebase-database:$rootProject.ext.playServicesVersion"
-    compile 'com.firebaseui:firebase-ui-database:0.4.0'
 
     compile "de.hdodenhof:circleimageview:$rootProject.ext.circleImageViewVersion"
     compile "com.cloudinary:cloudinary-android:$rootProject.ext.cloudinaryVersion"
@@ -64,6 +63,7 @@ dependencies {
     //androidTestCompile 'com.android.support:support-annotations:24.0.0-beta1'
     //compile project(path: ':backend', configuration: 'android-endpoints')
     //compile "com.google.appengine:appengine-endpoints:1.9.34"
+    compile 'com.firebaseui:firebase-ui-database:0.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
     testCompile 'junit:junit:4.12'
 }

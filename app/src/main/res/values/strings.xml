@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EncuestaSoft V1.0</string>
+    <string name="app_name">EncuestaSoft</string>
     <string name="main.title.list">Fotos</string>
     <string name="main.title.map">Mapa</string>
     <string name="main.notice.upload.init">Fotografía en proceso de publicación</string>
@@ -67,4 +67,9 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
     <string name="menu_logout">Log out</string>
+    <string name="preguntas.field.titulopregunta">Titulo de la pregunta</string>
+    <string name="preguntas.field.descripcion">Descripción de  la pregunta</string>
+    <string name="preguntas.field.numeropregunta">Número de pregunta</string>
+    <string name="survey.btnSiguiente">Siguiente</string>
+    <string name="survey.btnAnterior">Anterior</string>
 </resources>

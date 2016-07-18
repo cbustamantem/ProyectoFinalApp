@@ -8,4 +8,10 @@
         android:title="@string/menu_logout"
         android:visible="true"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_survey"
+        android:icon="@mipmap/survey_icon"
+        android:title="@string/menu_logout"
+        android:visible="true"
+        app:showAsAction="always" />
 </menu>

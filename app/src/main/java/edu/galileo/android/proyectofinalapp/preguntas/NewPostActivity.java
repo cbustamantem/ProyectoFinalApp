@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.galileo.android.proyectofinalapp.R;
-import edu.galileo.android.proyectofinalapp.preguntas.models.Post;
-import edu.galileo.android.proyectofinalapp.preguntas.models.User;
+import edu.galileo.android.proyectofinalapp.models.Preguntas;
+import edu.galileo.android.proyectofinalapp.models.User;
 
 public class NewPostActivity extends BaseActivity {
 
@@ -31,6 +31,7 @@ public class NewPostActivity extends BaseActivity {
 
     private EditText mTitleField;
     private EditText mBodyField;
+    private EditText mNroPregunta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class NewPostActivity extends BaseActivity {
 
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
+        mNroPregunta= (EditText) findViewById(R.id.field_nropregunta);
 
         findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,11 +106,11 @@ public class NewPostActivity extends BaseActivity {
 
     // [START write_fan_out]
     private void writeNewPost(String userId, String username, String title, String body) {
-        // Create new post at /user-posts/$userid/$postid and at
+        // Create new preguntas at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body);
-        Map<String, Object> postValues = post.toMap();
+        Preguntas preguntas = new Preguntas(userId, username, title, body);
+        Map<String, Object> postValues = preguntas.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + key, postValues);

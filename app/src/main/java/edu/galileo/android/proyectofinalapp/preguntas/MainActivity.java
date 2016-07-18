@@ -37,7 +37,6 @@ import edu.galileo.android.proyectofinalapp.preguntas.fragment.RecentPostsFragme
 public class  MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
-
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
@@ -51,12 +50,12 @@ public class  MainActivity extends BaseActivity {
             private final Fragment[] mFragments = new Fragment[] {
                     new RecentPostsFragment(),
                     new MyPostsFragment(),
-                    new MyTopPostsFragment(),
+                    new MyTopPostsFragment()
             };
             private final String[] mFragmentNames = new String[] {
-                    "Recent",
-                    "My Posts",
-                    "My Top Posts"
+                    "Preguntas",
+                    "Mis Preguntas",
+                    "Estadisticas"
             };
             @Override
             public Fragment getItem(int position) {
@@ -98,6 +97,10 @@ public class  MainActivity extends BaseActivity {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return true;
+            case R.id.action_survey:
+                startActivity(new Intent(this, SurveyActivity.class));
                 finish();
                 return true;
             default:

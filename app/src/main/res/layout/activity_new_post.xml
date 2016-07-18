@@ -13,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Title"
+        android:hint="@string/preguntas.field.titulopregunta"
         android:maxLines="1" />
 
     <EditText
@@ -25,10 +25,21 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
-        android:hint="Write your post..."
+        android:hint="@string/preguntas.field.descripcion"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:scrollHorizontally="false" />
+    <EditText
+        android:id="@+id/field_nropregunta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/field_body"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:hint="@string/preguntas.field.numeropregunta"
+        android:inputType="numberDecimal" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_submit_post"

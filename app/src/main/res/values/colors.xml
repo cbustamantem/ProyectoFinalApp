@@ -4,8 +4,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color> -->
     <color name="colorPrimary">#8cc63f</color>
+    <color name="colorBtnSelected">#A9F5F2</color>
+    <color name="colorBtnUnSelected">#64FE2E</color>
     <color name="colorPrimaryDark">#8cc63f</color>
-
     <color name="colorAccent">#FF4081</color>
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>

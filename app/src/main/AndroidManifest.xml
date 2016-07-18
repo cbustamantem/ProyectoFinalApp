@@ -17,14 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".preguntas.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
         <activity android:name=".preguntas.NewPostActivity" />
-        <activity android:name=".preguntas.PostDetailActivity"></activity>
+        <activity android:name=".preguntas.PostDetailActivity" />
+        <activity android:name=".preguntas.SurveyActivity"></activity>
     </application>
 
 </manifest>

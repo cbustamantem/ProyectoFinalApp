@@ -1,4 +1,4 @@
-package edu.galileo.android.proyectofinalapp.preguntas.models;
+package edu.galileo.android.proyectofinalapp.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

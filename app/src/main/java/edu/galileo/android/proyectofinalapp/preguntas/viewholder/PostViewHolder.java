@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.galileo.android.proyectofinalapp.R;
-import edu.galileo.android.proyectofinalapp.preguntas.models.Post;
+import edu.galileo.android.proyectofinalapp.models.Preguntas;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,11 +26,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         bodyView = (TextView) itemView.findViewById(R.id.post_body);
     }
 
-    public void bindToPost(Post post, View.OnClickListener starClickListener) {
-        titleView.setText(post.title);
-        authorView.setText(post.author);
-        numStarsView.setText(String.valueOf(post.starCount));
-        bodyView.setText(post.body);
+    public void bindToPost(Preguntas preguntas, View.OnClickListener starClickListener) {
+        titleView.setText(preguntas.title);
+        authorView.setText(preguntas.author);
+        numStarsView.setText(String.valueOf(preguntas.starCount));
+        bodyView.setText(preguntas.body);
 
         starView.setOnClickListener(starClickListener);
     }

@@ -1,4 +1,4 @@
-package edu.galileo.android.proyectofinalapp.preguntas.models;
+package edu.galileo.android.proyectofinalapp.models;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -8,20 +8,21 @@ import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
-public class Post {
+public class Preguntas {
 
     public String uid;
     public String author;
     public String title;
     public String body;
+    public int nroPregunta=0;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
 
-    public Post() {
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    public Preguntas() {
+        // Default constructor required for calls to DataSnapshot.getValue(Preguntas.class)
     }
 
-    public Post(String uid, String author, String title, String body) {
+    public Preguntas(String uid, String author, String title, String body) {
         this.uid = uid;
         this.author = author;
         this.title = title;
@@ -38,6 +39,7 @@ public class Post {
         result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("nroPregunta", nroPregunta);
 
         return result;
     }
