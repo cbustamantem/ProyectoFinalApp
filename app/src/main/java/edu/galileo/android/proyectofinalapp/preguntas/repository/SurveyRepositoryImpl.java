@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.galileo.android.proyectofinalapp.models.Opciones;
-import edu.galileo.android.proyectofinalapp.models.Preguntas;
+import edu.galileo.android.proyectofinalapp .models.Preguntas;
 
 /**
  * Created by cbustamante on 18/07/16.
